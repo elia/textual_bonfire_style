@@ -14,6 +14,7 @@
 		<script src="{{applicationResourcePath}}/JavaScript/API/core.js" type="text/javascript"></script>
 		<script src="{{activeStyleAbsolutePath}}/zepto8.tiny.js" type="text/javascript"></script>
 		<script src="{{activeStyleAbsolutePath}}/support.js?u={{cacheToken}}" type="text/javascript"></script>
+		<script src="{{activeStyleAbsolutePath}}/support.js?u={{cacheToken}}" type="text/javascript"></script>
 
 		<style type="text/css">
 			html, body, body[type], body {
@@ -33,6 +34,18 @@
 				}
 			{{/windowAntialiasingDisabled}}
 		</style>
+
+    <!-- EMOJIFY -->
+    <style type="text/css" media="screen">
+    .line .msg img.emojify {
+      margin: 0 !important;
+      padding: 0 !important;
+      display: inline !important;
+      border-width: 0 !important;
+      vertical-align: middle;
+    }
+    </style>
+
 	</head>
 
 	<body type="{{viewTypeToken}}"
@@ -72,5 +85,81 @@
 				<div id="topic_bar">
 				  {{{formattedTopicValue}}}</div>
 			{{/isChannelView}}
+
+
+
+      <!-- EMOJIFY -->
+      <link rel="stylesheet" type="text/css" href="{{activeStyleAbsolutePath}}/emojify.min.css?u={{cacheToken}}">
+      <script src="{{activeStyleAbsolutePath}}/emojify.min.js?u={{cacheToken}}"></script>
+      <script type="text/javascript" charset="utf-8">
+        var old_callback = Textual.newMessagePostedToView;
+        Textual.newMessagePostedToView = function(mid){
+          if (old_callback) { old_callback(mid); }
+          setTimeout(function(){
+            emojify.setConfig({
+                only_crawl_id: 'line'+mid,
+                emojify_tag_type: 'img',
+                emoticons_enabled: false,
+                people_enabled: true,
+                nature_enabled: true,
+                objects_enabled: true,
+                places_enabled: true,
+                symbols_enabled: true
+            });
+            emojify.run();
+          }, 1)
+
+        };
+
+          // if (old_callback) { old_callback(mid); }
+          // console.log('line'+mid);
+          // emojify.setConfig({
+          //     only_crawl_id: 'line'+mid,
+          //     // emojify_tag_type: 'img',
+          //     emoticons_enabled: true,
+          //     people_enabled: true,
+          //     nature_enabled: true,
+          //     objects_enabled: true,
+          //     places_enabled: true,
+          //     symbols_enabled: true
+          // });
+          // emojify.run();
+
+      // (function(){
+      //   // var old_callback = Textual.newMessagePostedToView;
+      //
+      //   // Textual.newMessagePostedToView = function(mid) {
+      //   //   console.log(mid);
+      //   //   // if (old_callback) { old_callback(mid); }
+      //   //   // console.log('line'+mid);
+      //   //   // emojify.setConfig({
+      //   //   //     only_crawl_id: 'line'+mid,
+      //   //   //     // emojify_tag_type: 'img',
+      //   //   //     emoticons_enabled: true,
+      //   //   //     people_enabled: true,
+      //   //   //     nature_enabled: true,
+      //   //   //     objects_enabled: true,
+      //   //   //     places_enabled: true,
+      //   //   //     symbols_enabled: true
+      //   //   // });
+      //   //   // emojify.run();
+      //   // };
+      //   // // emojify.setConfig({
+      //   // //     only_crawl_id: 'body_home'
+      //   // //     // emojify_tag_type: 'img',
+      //   // //     emoticons_enabled: true,
+      //   // //     people_enabled: true,
+      //   // //     nature_enabled: true,
+      //   // //     objects_enabled: true,
+      //   // //     places_enabled: true,
+      //   // //     symbols_enabled: true
+      //   // // });
+      //   // // emojify.run();
+      // })();
+
+
+      </script>
+
+
 	</body>
 </html>
